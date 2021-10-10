@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'mymacie
+
+  Sample SAM Template for mymacie
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  MacieFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: MacieFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+      Events:
+        Macie:
+          Type: Api
+          Properties:
+            Path: /macie
+            Method: get
+Outputs:
+  MacieApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  MacieFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - MacieFunction
+      - Arn
+  MacieFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - MacieFunctionRole
+      - Arn
